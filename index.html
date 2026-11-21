@@ -1,129 +1,737 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#f4ead8">
-<title>رسالة عيد ميلاد</title>
-<style>
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; min-height: 100vh; padding: 28px 16px;
-    display: flex; align-items: center; justify-content: center;
-    background: radial-gradient(circle at top, #fff9ed, #e8dcc7 75%);
-    color: #49382d; font-family: Georgia, "Times New Roman", serif;
-  }
-  .page { width: min(100%, 520px); text-align: center; }
-  .heading { font-size: 15px; letter-spacing: 2px; color: #92765d; margin-bottom: 24px; }
-  .hint { margin-top: 18px; color: #806a56; font-size: 14px; }
-  .envelope-wrap { perspective: 1000px; margin: 0 auto; width: min(100%, 390px); }
-  .envelope {
-    position: relative; width: 100%; height: 245px; cursor: pointer;
-    border: 0; padding: 0; background: transparent; display: block;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .envelope:focus-visible { outline: 3px solid #9a7454; outline-offset: 8px; border-radius: 8px; }
-  .back {
-    position: absolute; inset: 0; background: #d9c4a5;
-    border: 1px solid #b89c78; border-radius: 8px;
-    box-shadow: 0 15px 30px #6e513322;
-  }
-  .letter {
-    position: absolute; left: 6%; width: 88%; bottom: 8px; height: 210px;
-    padding: 20px 12px; background: #fffaf0; border: 1px solid #e2d2b8;
-    border-radius: 4px; color: #765d46; font-size: 20px;
-    transition: transform 1s ease, bottom 1s ease; z-index: 2;
-  }
-  .letter small { display: block; font-size: 12px; letter-spacing: 2px; margin-bottom: 12px; color: #a58a6b; }
-  .letter strong { font-weight: normal; font-size: 23px; }
-  .front {
-    position: absolute; inset: 0; z-index: 3; overflow: hidden;
-    background: #ead9bd; border: 1px solid #b89c78; border-radius: 8px;
-    clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
-  }
-  .front::before {
-    content: ""; position: absolute; inset: 0;
-    background: #e3cfad; clip-path: polygon(0 100%, 50% 42%, 100% 100%);
-  }
-  .flap {
-    position: absolute; left: 0; top: 0; width: 100%; height: 62%;
-    z-index: 4; background: #f0e1c8; border: 1px solid #b89c78;
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
-    transform-origin: top; transition: transform .8s ease; backface-visibility: hidden;
-  }
-  .seal {
-    position: absolute; z-index: 5; left: 50%; top: 54%;
-    transform: translate(-50%, -50%); width: 48px; height: 48px;
-    display: grid; place-items: center; border-radius: 50%;
-    background: #8c3f35; color: #f8e8cb; border: 2px solid #b77b65;
-    box-shadow: 0 3px 8px #50302244; font-size: 19px;
-    transition: opacity .3s ease;
-  }
-  .envelope.open .flap { transform: rotateX(180deg); z-index: 1; }
-  .envelope.open .seal { opacity: 0; }
-  .envelope.open .letter { bottom: 95px; transform: translateY(-35px); }
-  .letter-content {
-    display: none; margin: 30px auto 0; padding: 28px 24px;
-    max-width: 460px; text-align: right; line-height: 2.05;
-    background: #fffaf0; border: 1px solid #d9c6a7; border-radius: 5px;
-    box-shadow: 0 12px 30px #6e513322; font-size: 17px;
-    animation: appear .7s ease both;
-  }
-  .letter-content.show { display: block; }
-  .letter-content .salutation { text-align: center; color: #8a6547; font-size: 21px; margin-bottom: 18px; }
-  .signature { text-align: left; margin-top: 24px; color: #8a6547; font-size: 19px; }
-  @keyframes appear { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
-</style>
+  <!-- إعدادات الترميز والاستجابة للشاشات ولون شريط المتصفح -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f4ead8">
+  <title>رسالة عيد ميلاد</title>
+
+  <!-- استيراد الخطوط العربية الأدبية الدافئة من Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* إعادة ضبط الصناديق لضمان حساب الأبعاد بدقة */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    /* تنسيق الخلفية المتدرجة الدافئة والخط العام */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 32px 16px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #fff9ed, #e8dcc7 75%);
+      color: #49382d;
+      font-family: "Amiri", Georgia, "Times New Roman", serif;
+      overflow-x: hidden;
+    }
+
+    /* طبقة الجزيئات المتناثرة (قلوب وبتلات دافئة) في الخلفية */
+    .particles-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 20;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      user-select: none;
+      will-change: transform, opacity;
+      animation: floatScatter var(--duration, 2.8s) cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes floatScatter {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, 0, 0) scale(0.4) rotate(0deg);
+      }
+      18% {
+        opacity: 0.92;
+      }
+      80% {
+        opacity: 0.75;
+      }
+      100% {
+        opacity: 0;
+        transform: translate3d(var(--tx, 0px), var(--ty, -140px), 0) scale(var(--scale, 1)) rotate(var(--rot, 180deg));
+      }
+    }
+
+    /* الحاوية الرئيسية للصفحة */
+    .page {
+      position: relative;
+      z-index: 10;
+      width: min(100%, 520px);
+      text-align: center;
+    }
+
+    /* العنوان العلوي للرسالة */
+    .heading {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 14px;
+      letter-spacing: 2.2px;
+      color: #92765d;
+      margin-bottom: 18px;
+    }
+
+    /* شريط التحكم العلوي الخفيف (تشغيل / كتم / إعادة اللحن) */
+    .controls-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .audio-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid #d5c1a3;
+      background: rgba(255, 250, 240, 0.78);
+      color: #7c624b;
+      font-family: "Amiri", serif;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.25s ease, transform 0.2s ease, border-color 0.25s ease, opacity 0.25s ease;
+    }
+
+    .audio-btn:hover {
+      background: #fffaf0;
+      border-color: #b89c78;
+    }
+
+    .audio-btn:active {
+      transform: scale(0.97);
+    }
+
+    .audio-btn:focus-visible {
+      outline: 2px solid #9a7454;
+      outline-offset: 3px;
+    }
+
+    .audio-btn[hidden] {
+      display: none;
+    }
+
+    /* نص التلميح أسفل الظرف */
+    .hint {
+      margin-top: 18px;
+      color: #806a56;
+      font-size: 16px;
+      transition: opacity 0.3s ease;
+    }
+
+    /* حاوية الظرف مع منظور ثلاثي الأبعاد لفتح الغطاء */
+    .envelope-wrap {
+      perspective: 1000px;
+      margin: 0 auto;
+      width: min(100%, 390px);
+      filter: drop-shadow(0 12px 24px rgba(110, 81, 51, 0.14));
+    }
+
+    /* زر الظرف التفاعلي */
+    .envelope {
+      position: relative;
+      width: 100%;
+      height: 245px;
+      cursor: pointer;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      display: block;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* تمييز التركيز بلوحة المفاتيح لسهولة الوصول */
+    .envelope:focus-visible {
+      outline: 3px solid #9a7454;
+      outline-offset: 8px;
+      border-radius: 8px;
+    }
+
+    /* الجزء الخلفي للظرف */
+    .back {
+      position: absolute;
+      inset: 0;
+      background: #d9c4a5;
+      border: 1px solid #c3a986;
+      border-radius: 8px;
+    }
+
+    /* البطاقة الداخلية المنزلقة داخل الظرف */
+    .letter {
+      position: absolute;
+      left: 6%;
+      width: 88%;
+      bottom: 8px;
+      height: 210px;
+      padding: 20px 14px;
+      background: #fffaf0;
+      border: 1px solid #e2d2b8;
+      border-radius: 5px;
+      color: #765d46;
+      font-size: 21px;
+      transition: transform 1s ease, bottom 1s ease;
+      z-index: 2;
+      box-shadow: 0 2px 8px rgba(110, 81, 51, 0.08);
+    }
+
+    .letter small {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #a58a6b;
+    }
+
+    .letter strong {
+      font-family: "Aref Ruqaa", "Amiri", serif;
+      font-weight: 400;
+      font-size: 25px;
+      color: #7a583c;
+    }
+
+    /* الجزء الأمامي للظرف */
+    .front {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      overflow: hidden;
+      background: #ead9bd;
+      border: 1px solid #c3a986;
+      border-radius: 8px;
+      clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
+    }
+
+    /* الطبقة السفلية للجزء الأمامي لإعطاء عمق طية الظرف */
+    .front::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: #e3cfad;
+      clip-path: polygon(0 100%, 50% 42%, 100% 100%);
+    }
+
+    /* حاوية الغطاء العلوي لتطبيق ظل ناعم بدون حواف مقصوصة حادة */
+    .flap-wrap {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 62%;
+      z-index: 4;
+      transform-origin: top;
+      transition: transform 0.8s ease;
+      filter: drop-shadow(0 3px 5px rgba(95, 68, 41, 0.18));
+      pointer-events: none;
+    }
+
+    /* الغطاء العلوي القابل للدوران بحواف ورقية ناعمة */
+    .flap {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #f3e5ce 0%, #ebd9bc 100%);
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      backface-visibility: hidden;
+    }
+
+    /* ختم الشمع على شكل قلب */
+    .seal {
+      position: absolute;
+      z-index: 5;
+      left: 50%;
+      top: 54%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #a14b40, #80342b);
+      color: #f8e8cb;
+      border: 2px solid #be846e;
+      box-shadow: 0 4px 10px rgba(80, 48, 34, 0.3);
+      font-size: 20px;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .envelope:hover .seal {
+      transform: translate(-50%, -50%) scale(1.06);
+    }
+
+    /* حالة فتح الظرف */
+    .envelope.open .flap-wrap {
+      transform: rotateX(180deg);
+      z-index: 1;
+      filter: drop-shadow(0 -1px 3px rgba(95, 68, 41, 0.1));
+    }
+
+    .envelope.open .seal {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.8);
+    }
+
+    .envelope.open .letter {
+      bottom: 95px;
+      transform: translateY(-35px);
+    }
+
+    /* بطاقة الرسالة الكاملة بعد فتح الظرف */
+    .letter-content {
+      display: none;
+      margin: 30px auto 0;
+      padding: 32px 26px;
+      max-width: 470px;
+      text-align: right;
+      line-height: 2.15;
+      background: #fffaf0;
+      background-image: linear-gradient(to bottom, rgba(217, 198, 167, 0.12) 1px, transparent 1px);
+      background-size: 100% 2.15em;
+      border: 1px solid #d9c6a7;
+      border-radius: 6px;
+      box-shadow: 0 12px 30px rgba(110, 81, 51, 0.14);
+      font-size: 19px;
+      animation: appear 0.75s ease both;
+    }
+
+    .letter-content.show {
+      display: block;
+    }
+
+    .letter-content .salutation {
+      font-family: "Aref Ruqaa", "Amiri", serif;
+      text-align: center;
+      color: #8a6547;
+      font-size: 26px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .letter-content p {
+      margin: 0 0 14px;
+    }
+
+    .signature {
+      font-family: "Aref Ruqaa", "Amiri", serif;
+      text-align: left;
+      margin-top: 26px;
+      color: #8a6547;
+      font-size: 23px;
+      line-height: 1.7;
+    }
+
+    /* حركة ظهور بطاقة الرسالة */
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* تحسين التجاوب على الشاشات الصغيرة جداً */
+    @media (max-width: 400px) {
+      .letter-content {
+        padding: 24px 18px;
+        font-size: 18px;
+      }
+      .letter-content .salutation {
+        font-size: 23px;
+      }
+    }
+
+    /* احترام تفضيل تقليل الحركة في إعدادات النظام */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+      .particles-layer {
+        display: none !important;
+      }
+    }
+  </style>
 </head>
 <body>
-<main class="page">
-  <div class="heading">A LITTLE LETTER, FROM THE HEART</div>
-  <div class="envelope-wrap">
-    <button class="envelope" id="envelope" type="button" aria-label="افتح الظرف" aria-expanded="false">
-      <div class="back"></div>
-      <div class="letter"><small>إلى من يهمّه الأمر</small><strong>رسالة صغيرة لك...</strong></div>
-      <div class="front"></div>
-      <div class="flap"></div>
-      <div class="seal">♥</div>
-    </button>
-  </div>
-  <div class="hint" id="hint">اضغط على الظرف لفتح الرسالة</div>
+  <!-- طبقة التناثر البصري للقلوب والبتلات -->
+  <div class="particles-layer" id="particlesLayer" aria-hidden="true"></div>
 
-  <article class="letter-content" id="message" aria-hidden="true">
-    <div class="salutation">إلى عزيزٍ له في القلب مقام…</div>
-    <p>أما بعد،</p>
-    <p>فقد جاءت مناسبة يوم ميلادك، فوجدتني أرغب في أن أترك لك بضع كلمات، لعلها تصل إليك كما أردت لها أن تصل.</p>
-    <p>كل سنة وأنت طيب، وكل سنة وأيامك مليانة خير وفرح وراحة بال. أتمنى لك سنة جديدة تحمل لك من الحلو أكثر مما تتمنى، وتقرّبك من كل حاجة نفسك فيها.</p>
-    <p>ولعلك لا تعلم أن لسعادتك مكانًا خاصًا في دعائي، وأن هناك أشخاصًا لهم معزّة لا تحتاج إلى إعلان، يكفي أن نتمنى لهم الخير من القلب.</p>
-    <p>وإن كان لي من أمنية في هذا اليوم، فهي أن تظلّ بخير، وأن تظلّ قريبًا من أيامي، وإن لم أُخبرك بذلك.</p>
-    <p>دمت بخير، وكل عام وأنت إلى ما تحب أقرب.</p>
-    <div class="signature">من صاحبة هذه الرسالة،<br>إلى يوسف ♥</div>
-  </article>
-</main>
-<script>
-  (function () {
-    const envelope = document.getElementById('envelope');
-    const message = document.getElementById('message');
-    const hint = document.getElementById('hint');
-    envelope.addEventListener('click', function () {
-      const isOpen = envelope.classList.toggle('open');
-      envelope.setAttribute('aria-expanded', String(isOpen));
-      envelope.setAttribute('aria-label', isOpen ? 'أغلق الظرف' : 'افتح الظرف');
-      if (isOpen) {
-        hint.textContent = 'رسالتك وصلت ♥';
-        window.setTimeout(function () {
+  <main class="page">
+    <div class="heading">A LITTLE LETTER, FROM THE HEART</div>
+
+    <!-- شريط التحكم بالموسيقى المدمجة -->
+    <div class="controls-bar">
+      <button type="button" class="audio-btn" id="musicToggle" aria-pressed="true" title="تفعيل أو كتم الموسيقى">
+        <span id="musicIcon" aria-hidden="true">🎵</span>
+        <span id="musicLabel">الموسيقى: مفعّلة</span>
+      </button>
+      <button type="button" class="audio-btn" id="replayBtn" hidden title="إعادة تشغيل اللحن">
+        <span aria-hidden="true">↻</span>
+        <span>إعادة اللحن</span>
+      </button>
+    </div>
+
+    <div class="envelope-wrap">
+      <button class="envelope" id="envelope" type="button" aria-label="افتح الظرف" aria-expanded="false">
+        <div class="back"></div>
+        <div class="letter">
+          <small>إلى من يهمّه الأمر</small>
+          <strong>رسالة صغيرة لك...</strong>
+        </div>
+        <div class="front"></div>
+        <div class="flap-wrap">
+          <div class="flap"></div>
+        </div>
+        <div class="seal">♥</div>
+      </button>
+    </div>
+
+    <div class="hint" id="hint">اضغط على الظرف لفتح الرسالة</div>
+
+    <article class="letter-content" id="message" aria-hidden="true">
+      <div class="salutation">إلى عزيزٍ له في القلب مقام…</div>
+      <p>أما بعد،</p>
+      <p>فقد جاءت مناسبة يوم ميلادك، فوجدتني أرغب في أن أترك لك بضع كلمات، لعلها تصل إليك كما أردت لها أن تصل.</p>
+      <p>كل سنة وأنت طيب، وكل سنة وأيامك مليانة خير وفرح وراحة بال. أتمنى لك سنة جديدة تحمل لك من الحلو أكثر مما تتمنى، وتقرّبك من كل حاجة نفسك فيها.</p>
+      <p>ولعلك لا تعلم أن لسعادتك مكانًا خاصًا في دعائي، وأن هناك أشخاصًا لهم معزّة لا تحتاج إلى إعلان، يكفي أن نتمنى لهم الخير من القلب.</p>
+      <p>وإن كان لي من أمنية في هذا اليوم، فهي أن تظلّ بخير، وأن تظلّ قريبًا من أيامي، وإن لم أُخبرك بذلك.</p>
+      <p>دمت بخير، وكل عام وأنت إلى ما تحب أقرب.</p>
+      <div class="signature">من رقية،<br>إلى يوسف ♥</div>
+    </article>
+  </main>
+
+  <script>
+    (function () {
+      // جلب العناصر التفاعلية مع التحقق الآمن من وجودها
+      const envelope = document.getElementById('envelope');
+      const message = document.getElementById('message');
+      const hint = document.getElementById('hint');
+      const particlesLayer = document.getElementById('particlesLayer');
+      const musicToggle = document.getElementById('musicToggle');
+      const musicIcon = document.getElementById('musicIcon');
+      const musicLabel = document.getElementById('musicLabel');
+      const replayBtn = document.getElementById('replayBtn');
+
+      if (!envelope || !message || !hint) {
+        return;
+      }
+
+      let revealTimeoutId = null;
+      let isMusicEnabled = true;
+      let isPlayingMelody = false;
+      let audioCtx = null;
+      let masterGain = null;
+      let scheduledTimers = [];
+
+      // التحقق من تفضيل المستخدم لتقليل الحركة
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      /**
+       * تهيئة سياق الصوت Web Audio API بأمان عند أول تفاعل للمستخدم
+       */
+      function ensureAudioContext() {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return null;
+
+        if (!audioCtx) {
+          audioCtx = new AudioContextClass();
+          masterGain = audioCtx.createGain();
+          masterGain.gain.setValueAtTime(isMusicEnabled ? 0.85 : 0, audioCtx.currentTime);
+          masterGain.connect(audioCtx.destination);
+        }
+
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        return audioCtx;
+      }
+
+      /**
+       * إيقاف أي نغمات مجدولة حالياً لتجنب تداخل اللحن عند إعادة التشغيل
+       */
+      function stopMelodyTimers() {
+        scheduledTimers.forEach(function (id) {
+          window.clearTimeout(id);
+        });
+        scheduledTimers = [];
+        isPlayingMelody = false;
+      }
+
+      /**
+       * عزف نغمة واحدة بصوت صندوق موسيقى / بيانو دافئ (Music Box Tone)
+       */
+      function playMusicBoxNote(freq, startTime, duration, volume) {
+        const ctx = ensureAudioContext();
+        if (!ctx || !masterGain || !freq) return;
+
+        // النغمة الأساسية الدافئة (Sine) + توافقي علوي خفيف لبريق صندوق الموسيقى (Triangle)
+        const oscMain = ctx.createOscillator();
+        const oscHarmonic = ctx.createOscillator();
+        const noteGain = ctx.createGain();
+        const harmonicGain = ctx.createGain();
+
+        oscMain.type = 'sine';
+        oscMain.frequency.setValueAtTime(freq, startTime);
+
+        oscHarmonic.type = 'triangle';
+        oscHarmonic.frequency.setValueAtTime(freq * 2, startTime);
+        harmonicGain.gain.setValueAtTime(0.14, startTime);
+
+        // غلاف صوتي ناعم يحاكي نقرة البيانو أو صندوق الموسيقى (Attack سريع وتلاشي طويل ناعم)
+        const peak = volume || 0.16;
+        noteGain.gain.setValueAtTime(0.0001, startTime);
+        noteGain.gain.linearRampToValueAtTime(peak, startTime + 0.025);
+        noteGain.gain.exponentialRampToValueAtTime(peak * 0.45, startTime + duration * 0.45);
+        noteGain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration + 0.35);
+
+        oscMain.connect(noteGain);
+        oscHarmonic.connect(harmonicGain);
+        harmonicGain.connect(noteGain);
+        noteGain.connect(masterGain);
+
+        oscMain.start(startTime);
+        oscHarmonic.start(startTime);
+        oscMain.stop(startTime + duration + 0.4);
+        oscHarmonic.stop(startTime + duration + 0.4);
+      }
+
+      /**
+       * عزف لحن "عيد ميلاد سعيد" (Happy Birthday) بإيقاع هادئ ودافئ في سلم فا الكبير (F Major)
+       */
+      function playBirthdayMelody() {
+        if (!isMusicEnabled) return;
+
+        const ctx = ensureAudioContext();
+        if (!ctx) return;
+
+        stopMelodyTimers();
+        isPlayingMelody = true;
+
+        // ترددات النغمات الموسيقية بالهرتز (F Major - نغمة دافئة ومريحة للأذن)
+        const N = {
+          C4: 261.63,
+          D4: 293.66,
+          E4: 329.63,
+          F4: 349.23,
+          G4: 392.00,
+          A4: 440.00,
+          Bb4: 466.16,
+          C5: 523.25,
+          D5: 587.33,
+          F5: 698.46,
+          // نغمات مرافقة (Bass / Harmony) لإعطاء عمق دافئ للّحن
+          F3: 174.61,
+          C3: 130.81,
+          Bb3: 233.08
+        };
+
+        const beat = 0.46; // سرعة هادئة ورومانسية
+
+        // مقطوعة Happy Birthday مع نغمات مرافقة ناعمة
+        const score = [
+          // "Happy Birth-day to you"
+          { f: N.C4, b: 0.75, vol: 0.14 },
+          { f: N.C4, b: 0.25, vol: 0.13 },
+          { f: N.D4, b: 1.0,  vol: 0.16, bass: N.F3 },
+          { f: N.C4, b: 1.0,  vol: 0.15 },
+          { f: N.F4, b: 1.0,  vol: 0.17 },
+          { f: N.E4, b: 2.0,  vol: 0.16, bass: N.C3 },
+
+          // "Happy Birth-day to you"
+          { f: N.C4, b: 0.75, vol: 0.14 },
+          { f: N.C4, b: 0.25, vol: 0.13 },
+          { f: N.D4, b: 1.0,  vol: 0.16, bass: N.C3 },
+          { f: N.C4, b: 1.0,  vol: 0.15 },
+          { f: N.G4, b: 1.0,  vol: 0.17 },
+          { f: N.F4, b: 2.0,  vol: 0.17, bass: N.F3 },
+
+          // "Happy Birth-day dear You-sef"
+          { f: N.C4, b: 0.75, vol: 0.14 },
+          { f: N.C4, b: 0.25, vol: 0.13 },
+          { f: N.C5, b: 1.0,  vol: 0.18, bass: N.F3 },
+          { f: N.A4, b: 1.0,  vol: 0.16 },
+          { f: N.F4, b: 1.0,  vol: 0.16, bass: N.Bb3 },
+          { f: N.E4, b: 1.0,  vol: 0.15 },
+          { f: N.D4, b: 2.0,  vol: 0.16, bass: N.Bb3 },
+
+          // "Happy Birth-day to you"
+          { f: N.Bb4, b: 0.75, vol: 0.16 },
+          { f: N.Bb4, b: 0.25, vol: 0.15 },
+          { f: N.A4,  b: 1.0,  vol: 0.17, bass: N.F3 },
+          { f: N.F4,  b: 1.0,  vol: 0.16 },
+          { f: N.G4,  b: 1.0,  vol: 0.17, bass: N.C3 },
+          { f: N.F4,  b: 2.5,  vol: 0.18, bass: N.F3 }
+        ];
+
+        let cursorTime = ctx.currentTime + 0.12;
+        let totalDurationMs = 0;
+
+        score.forEach(function (note) {
+          const noteDuration = note.b * beat;
+          playMusicBoxNote(note.f, cursorTime, noteDuration, note.vol);
+
+          if (note.bass) {
+            playMusicBoxNote(note.bass, cursorTime, noteDuration * 1.6, 0.065);
+          }
+
+          cursorTime += noteDuration;
+          totalDurationMs += noteDuration * 1000;
+        });
+
+        const endTimer = window.setTimeout(function () {
+          isPlayingMelody = false;
+        }, totalDurationMs + 400);
+        scheduledTimers.push(endTimer);
+      }
+
+      // التحكم في زر تفعيل/كتم الموسيقى
+      if (musicToggle && musicIcon && musicLabel) {
+        musicToggle.addEventListener('click', function () {
+          isMusicEnabled = !isMusicEnabled;
+          musicToggle.setAttribute('aria-pressed', String(isMusicEnabled));
+          musicIcon.textContent = isMusicEnabled ? '🎵' : '🔇';
+          musicLabel.textContent = isMusicEnabled ? 'الموسيقى: مفعّلة' : 'الموسيقى: صامتة';
+
+          if (masterGain && audioCtx) {
+            masterGain.gain.setTargetAtTime(isMusicEnabled ? 0.85 : 0, audioCtx.currentTime, 0.05);
+          }
+
+          // إذا كان الظرف مفتوحاً وتم تفعيل الصوت ولم يكن اللحن يعمل، ابدأ تشغيله
+          if (isMusicEnabled && envelope.classList.contains('open') && !isPlayingMelody) {
+            playBirthdayMelody();
+          }
+        });
+      }
+
+      // زر إعادة تشغيل اللحن في أي وقت بعد فتح الظرف
+      if (replayBtn) {
+        replayBtn.addEventListener('click', function () {
+          if (!isMusicEnabled) {
+            isMusicEnabled = true;
+            if (musicToggle && musicIcon && musicLabel) {
+              musicToggle.setAttribute('aria-pressed', 'true');
+              musicIcon.textContent = '🎵';
+              musicLabel.textContent = 'الموسيقى: مفعّلة';
+            }
+            if (masterGain && audioCtx) {
+              masterGain.gain.setValueAtTime(0.85, audioCtx.currentTime);
+            }
+          }
+          playBirthdayMelody();
+        });
+      }
+
+      /**
+       * إطلاق قلوب صغيرة وبتلات دافئة متناثرة عند فتح الظرف
+       */
+      function releaseWarmParticles() {
+        if (!particlesLayer || prefersReducedMotion.matches) {
+          return;
+        }
+
+        const rect = envelope.getBoundingClientRect();
+        const originX = rect.left + rect.width / 2;
+        const originY = rect.top + rect.height * 0.48;
+
+        const palette = [
+          { symbol: '♥', color: '#8c3f35', size: 15 },
+          { symbol: '♥', color: '#b87b65', size: 13 },
+          { symbol: '❀', color: '#c99b5b', size: 16 },
+          { symbol: '✦', color: '#d4a359', size: 12 },
+          { symbol: '❦', color: '#9e4c41', size: 15 }
+        ];
+
+        const count = 18;
+        for (let i = 0; i < count; i++) {
+          const item = palette[i % palette.length];
+          const el = document.createElement('span');
+          el.className = 'particle';
+          el.textContent = item.symbol;
+          el.style.color = item.color;
+          el.style.fontSize = (item.size + Math.random() * 5) + 'px';
+
+          const startOffsetX = (Math.random() - 0.5) * 70;
+          const startOffsetY = (Math.random() - 0.5) * 24;
+          el.style.left = (originX + startOffsetX) + 'px';
+          el.style.top = (originY + startOffsetY) + 'px';
+
+          const tx = (Math.random() - 0.5) * 260;
+          const ty = -90 - Math.random() * 160;
+          const rot = (Math.random() - 0.5) * 240;
+          const scale = 0.85 + Math.random() * 0.45;
+          const duration = 2.2 + Math.random() * 1.1;
+
+          el.style.setProperty('--tx', tx.toFixed(1) + 'px');
+          el.style.setProperty('--ty', ty.toFixed(1) + 'px');
+          el.style.setProperty('--rot', rot.toFixed(1) + 'deg');
+          el.style.setProperty('--scale', scale.toFixed(2));
+          el.style.setProperty('--duration', duration.toFixed(2) + 's');
+          el.style.animationDelay = (Math.random() * 0.25).toFixed(2) + 's';
+
+          particlesLayer.appendChild(el);
+
+          window.setTimeout(function () {
+            if (el.parentNode) {
+              el.parentNode.removeChild(el);
+            }
+          }, (duration + 0.4) * 1000);
+        }
+      }
+
+      // التفاعل عند النقر على الظرف
+      envelope.addEventListener('click', function () {
+        try {
+          const isOpen = envelope.classList.toggle('open');
+          envelope.setAttribute('aria-expanded', String(isOpen));
+          envelope.setAttribute('aria-label', isOpen ? 'أغلق الظرف' : 'افتح الظرف');
+
+          if (revealTimeoutId !== null) {
+            window.clearTimeout(revealTimeoutId);
+            revealTimeoutId = null;
+          }
+
+          if (isOpen) {
+            hint.textContent = 'رسالتك وصلت ♥';
+            releaseWarmParticles();
+            playBirthdayMelody();
+
+            if (replayBtn) {
+              replayBtn.hidden = false;
+            }
+
+            revealTimeoutId = window.setTimeout(function () {
+              message.classList.add('show');
+              message.setAttribute('aria-hidden', 'false');
+              message.scrollIntoView({ behavior: prefersReducedMotion.matches ? 'auto' : 'smooth', block: 'start' });
+              revealTimeoutId = null;
+            }, 650);
+          } else {
+            message.classList.remove('show');
+            message.setAttribute('aria-hidden', 'true');
+            hint.textContent = 'اضغط على الظرف لفتح الرسالة';
+          }
+        } catch (error) {
           message.classList.add('show');
           message.setAttribute('aria-hidden', 'false');
-          message.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 650);
-      } else {
-        message.classList.remove('show');
-        message.setAttribute('aria-hidden', 'true');
-        hint.textContent = 'اضغط على الظرف لفتح الرسالة';
-      }
-    });
-  })();
-</script>
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
